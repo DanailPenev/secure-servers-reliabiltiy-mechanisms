@@ -1,25 +1,26 @@
 package server
 
 import akka.http.scaladsl.model.{StatusCode, StatusCodes}
+import akka.http.scaladsl.server.directives.Credentials
 
 object TryCatchAuthenticator {
-  def authenticate(username: String, password: String): Unit = {
-    val result = Config.map.get(username)
-    result match {
-      case Some(passwordHash) =>
-        if (passwordHash != password) {
-          throw new Exception
+  def authenticate(credentials: Credentials): Unit =
+    credentials match {
+      case p @ Credentials.Provided(id) =>
+        val result = Config.map.get(id)
+        result match {
+          case Some(secret) if !p.verify(secret) => throw new Exception
+          case None => throw new Exception
         }
-      case None => throw new Exception
+      case _ => throw new Exception
     }
-  }
 
-  def tryAuthenticate(username: String, password: String): StatusCode = {
+  def authenticator(credentials: Credentials): Option[StatusCode] = {
     try {
-      authenticate(username, password)
-      StatusCodes.OK
+      authenticate(credentials)
+      Option(StatusCodes.OK)
     } catch {
-      case _: Exception => StatusCodes.Unauthorized
+      case _: Exception => Option(StatusCodes.Unauthorized)
     }
   }
 }
