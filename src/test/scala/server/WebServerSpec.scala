@@ -7,7 +7,7 @@ import akka.http.scaladsl.testkit.ScalatestRouteTest
 import org.scalatest.{Matchers, WordSpec}
 
 class WebServerSpec extends WordSpec with Matchers with ScalatestRouteTest with Routes {
-  val models: Vector[String] = Vector("exceptions", "futures")
+  val models: Vector[String] = Vector("exceptions", "actors", "futures")
 
   "The service" should {
     "return a 'Hello!' response for GET requests to /hello" in {

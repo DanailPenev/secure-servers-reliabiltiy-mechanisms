@@ -16,6 +16,18 @@ object AuthRouter {
             complete(TryCatchAuthenticator.isAdmin(nameCookie))
           }
         }
+    } ~ pathPrefix("actors") {
+      path("login") {
+        authenticateBasicAsync(realm = "secure site", ActorAuthenticator.authenticator) { statusCode =>
+          complete(statusCode)
+        }
+
+      } ~
+        path("admin") {
+          cookie("userName") { nameCookie =>
+            complete(ActorAuthenticator.checkAdmin(nameCookie.value))
+          }
+        }
     } ~ pathPrefix("futures") {
       path("login") {
         authenticateBasicAsync(realm = "secure site", FutureAuthenticator.authenticator) { statusCode =>
