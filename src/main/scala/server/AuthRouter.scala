@@ -11,8 +11,8 @@ object AuthRouter {
           complete(statusCode)
         }
       } ~
-        cookie("userName") { nameCookie =>
-          path("admin") {
+        path("admin") {
+          cookie("userName") { nameCookie =>
             complete(TryCatchAuthenticator.isAdmin(nameCookie))
           }
         }
@@ -23,8 +23,8 @@ object AuthRouter {
         }
 
       } ~
-        cookie("userName") { nameCookie =>
-          path("admin") {
+        path("admin") {
+          cookie("userName") { nameCookie =>
             complete(FutureAuthenticator.checkAdmin(nameCookie.value))
           }
         }
