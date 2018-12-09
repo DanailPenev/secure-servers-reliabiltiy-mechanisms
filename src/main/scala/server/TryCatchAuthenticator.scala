@@ -7,8 +7,7 @@ object TryCatchAuthenticator {
   def authenticate(credentials: Credentials): Unit =
     credentials match {
       case p @ Credentials.Provided(id) =>
-        val result = Config.map.get(id)
-        result match {
+        Config.map.get(id) match {
           case Some(secret) if !p.verify(secret) => throw new Exception
           case None => throw new Exception
         }
