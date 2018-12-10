@@ -23,9 +23,9 @@ object AuthRouter {
         }
     } ~ pathPrefix("actors") {
       path("login") {
-        extractCredentials { creds =>
+        extractCredentials { credentials =>
           completeWith(instanceOf[StatusCode]) { completerFunction =>
-            ActorController.authenticate(creds, completerFunction)
+            ActorController.authenticate(credentials, completerFunction)
           }
         }
       } ~ path("admin") {

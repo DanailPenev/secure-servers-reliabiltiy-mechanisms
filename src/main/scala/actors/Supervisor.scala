@@ -13,12 +13,12 @@ class Supervisor() extends Actor {
     }
 
   override def receive: Receive = {
-    case Authenticate(creds, completer) =>
-      val props = Props(new AuthenticationWorker(credentials = creds, completer))
+    case Authenticate(credentials, complete) =>
+      val props = Props(new AuthenticationWorker(credentials = credentials, complete))
       val worker = context.actorOf(props)
       worker ! Authenticate
-    case Authorize(cookie, completer) =>
-      val props = Props(new AuthorizationWorker(cookie, completer))
+    case Authorize(cookie, complete) =>
+      val props = Props(new AuthorizationWorker(cookie, complete))
       val worker = context.actorOf(props)
       worker ! Authorize
   }
