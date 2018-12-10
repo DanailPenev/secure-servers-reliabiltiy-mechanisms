@@ -1,28 +1,18 @@
 package actors
 
-import actors.Messages.Authenticate
+import actors.Messages.{Authenticate, CompleteSuccessful}
 import akka.actor.Actor
-import akka.http.scaladsl.model.StatusCodes
-import akka.http.scaladsl.model.headers.{HttpCredentials, `WWW-Authenticate`}
-import akka.http.scaladsl.server.Directives._
-import akka.http.scaladsl.server.{RequestContext, Route}
 import akka.http.scaladsl.server.directives.Credentials
 import server.TryCatchAuthenticator
 
 class Worker extends Actor {
   override def receive: Receive = {
-    case Authenticate(request) =>
-      extractCredentials { creds =>
-        creds.
-      }
-      extractRequestContext { ctx =>
-        var head = ctx.request.headers[`WWW-Authenticate`]
-      }
+    case Authenticate(creds) =>
+      authenticate(Credentials(creds))
   }
 
-  def authenticate(requestContext: RequestContext, credentials: Option[HttpCredentials]): Route = {
+  def authenticate(credentials: Credentials): Unit = {
     TryCatchAuthenticator.authenticate(credentials)
-    requestContext.complete(StatusCodes.OK)
+    context.parent ! CompleteSuccessful
   }
-
 }

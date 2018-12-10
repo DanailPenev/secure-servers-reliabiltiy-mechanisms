@@ -2,7 +2,6 @@ package server
 
 import akka.http.scaladsl.model.headers.HttpCookiePair
 import akka.http.scaladsl.model.{StatusCode, StatusCodes}
-import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.directives.Credentials
 
 object TryCatchAuthenticator {

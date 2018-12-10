@@ -1,23 +1,28 @@
 package actors
 
-import actors.Messages.{Authenticate, CompleteFailed, Handle, Terminate}
-import akka.actor.SupervisorStrategy.Resume
+import actors.Messages._
+import akka.actor.SupervisorStrategy.Stop
 import akka.actor.{Actor, OneForOneStrategy, Props}
-import akka.http.scaladsl.model.StatusCodes
+import akka.http.scaladsl.model.{StatusCode, StatusCodes}
 
-class Supervisor extends Actor {
+class Supervisor(complete: StatusCode => Unit) extends Actor {
   override val supervisorStrategy: OneForOneStrategy =
     OneForOneStrategy() {
       case _: Exception =>
-        sender ! Terminate
-        Resume
+        self ! CompleteFailed
+        Stop
     }
 
   override def receive: Receive = {
-    case Handle(request) =>
+    case Handle(creds) =>
       val worker = context.actorOf(Props[Worker])
-      worker ! Authenticate(request)
-    case CompleteFailed(request) =>
-      request.complete(StatusCodes.Unauthorized)
+      worker ! Authenticate(creds)
+    case CompleteSuccessful =>
+      complete(StatusCodes.OK)
+      context stop sender()
+      context stop self
+    case CompleteFailed =>
+      complete(StatusCodes.Unauthorized)
+      context stop self
   }
 }
