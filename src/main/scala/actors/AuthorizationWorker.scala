@@ -2,9 +2,9 @@ package actors
 
 import actors.Messages.{Authorize, CompleteFailed}
 import akka.actor.Actor
-import akka.http.scaladsl.model.{StatusCode, StatusCodes}
 import akka.http.scaladsl.model.headers.HttpCookiePair
-import server.TryCatchAuthenticator
+import akka.http.scaladsl.model.{StatusCode, StatusCodes}
+import util.Common
 
 class AuthorizationWorker(cookie: HttpCookiePair, complete: StatusCode => Unit) extends Actor{
   override def receive: Receive = {
@@ -16,7 +16,7 @@ class AuthorizationWorker(cookie: HttpCookiePair, complete: StatusCode => Unit) 
   }
 
   def authorize(username: String): Unit = {
-    TryCatchAuthenticator.checkAdmin(username)
+    Common.checkAdmin(username)
     complete(StatusCodes.OK)
     context stop self
   }
