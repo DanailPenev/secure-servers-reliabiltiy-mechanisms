@@ -2,10 +2,10 @@ package actors
 
 import actors.Messages.{Authenticate, CompleteFailed}
 import akka.actor.Actor
+import akka.http.scaladsl.model.headers.HttpCredentials
 import akka.http.scaladsl.model.{StatusCode, StatusCodes}
-import akka.http.scaladsl.model.headers.{HttpCookiePair, HttpCredentials}
 import akka.http.scaladsl.server.directives.Credentials
-import server.TryCatchAuthenticator
+import util.Common
 
 class AuthenticationWorker(credentials: Option[HttpCredentials], complete: StatusCode => Unit ) extends Actor {
   override def receive: Receive = {
@@ -17,7 +17,7 @@ class AuthenticationWorker(credentials: Option[HttpCredentials], complete: Statu
   }
 
   def authenticate(credentials: Credentials): Unit = {
-    TryCatchAuthenticator.authenticate(credentials)
+    Common.authenticate(credentials)
     complete(StatusCodes.OK)
     context stop self
   }
