@@ -1,7 +1,6 @@
 package server
 
-import actors.Supervisor
-import akka.actor.{ActorSystem, Props}
+import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
 
@@ -15,8 +14,6 @@ object WebServer extends App with Routes {
     implicit val materializer: ActorMaterializer = ActorMaterializer()
     // needed for the future flatMap/onComplete in the end
     implicit val executionContext: ExecutionContextExecutor = system.dispatcher
-
-    val supervisor = system.actorOf(Props[Supervisor])
 
     val bindingFuture = Http().bindAndHandle(route, "localhost", 8080)
 
