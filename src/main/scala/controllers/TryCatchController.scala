@@ -6,7 +6,7 @@ import akka.http.scaladsl.server.directives.Credentials
 import util.Common
 
 object TryCatchController {
-  def authenticator(credentials: Option[HttpCredentials], complete: StatusCode => Unit): Unit = {
+  def authenticate(credentials: Option[HttpCredentials], complete: StatusCode => Unit): Unit = {
     try {
       Common.authenticate(Credentials(credentials))
       complete(StatusCodes.OK)

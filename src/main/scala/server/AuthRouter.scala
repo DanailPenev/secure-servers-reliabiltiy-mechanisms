@@ -11,7 +11,7 @@ object AuthRouter {
       path("login") {
         extractCredentials { credentials =>
           completeWith(instanceOf[StatusCode]) { completerFunction =>
-            TryCatchController.authenticator(credentials, completerFunction)
+            TryCatchController.authenticate(credentials, completerFunction)
           }
         }
       } ~ path("admin") {
@@ -39,7 +39,7 @@ object AuthRouter {
       path("login") {
         extractCredentials { credentials =>
           completeWith(instanceOf[StatusCode]) { completerFunction =>
-            FutureController.authenticator(credentials, completerFunction)
+            FutureController.authenticate(credentials, completerFunction)
           }
         }
       } ~ path("admin") {

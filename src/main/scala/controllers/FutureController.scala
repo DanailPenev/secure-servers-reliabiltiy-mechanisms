@@ -11,7 +11,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 
 object FutureController {
-  def authenticator(credentials: Option[HttpCredentials], complete: StatusCode => Unit): Unit = Future {
+  def authenticate(credentials: Option[HttpCredentials], complete: StatusCode => Unit): Unit = Future {
     Credentials(credentials) match {
       case p@Credentials.Provided(id) =>
         Config.users.get(id) match {
