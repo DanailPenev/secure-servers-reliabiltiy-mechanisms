@@ -1,15 +1,16 @@
 package server
 
-import actors.Messages.Handle
+import actors.Messages.{Authenticate, Authorize}
 import actors.Supervisor
-import akka.actor.{ActorSystem, Props}
+import akka.actor.{ActorRef, ActorSystem, Props}
 import akka.http.scaladsl.model.StatusCode
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
-import akka.http.scaladsl.server.directives.Credentials
 
 object AuthRouter {
   val system: ActorSystem = ActorSystem("yolo")
+
+  val supervisor: ActorRef = system.actorOf(Props[Supervisor])
 
   lazy val routes: Route =
     pathPrefix("exceptions") {
@@ -27,17 +28,17 @@ object AuthRouter {
       path("login") {
         extractCredentials { creds =>
           completeWith(instanceOf[StatusCode]) { completerFunction =>
-            val props = Props(new Supervisor(completerFunction))
-            val disposableActor = system.actorOf(props)
-            disposableActor ! Handle(creds)
+            supervisor ! Authenticate(creds, completerFunction)
           }
         }
-      }
-//        path("admin") {
-//          cookie("userName") { nameCookie =>
-//            complete(ActorAuthenticator.checkAdmin(nameCookie.value))
-//          }
-//        }
+      } ~
+        path("admin") {
+          cookie("userName") { nameCookie =>
+            completeWith(instanceOf[StatusCode]) { completerFunction =>
+              supervisor ! Authorize(nameCookie, completerFunction)
+            }
+          }
+        }
     } ~ pathPrefix("futures") {
       path("login") {
         authenticateBasicAsync(realm = "secure site", FutureAuthenticator.authenticator) { statusCode =>
