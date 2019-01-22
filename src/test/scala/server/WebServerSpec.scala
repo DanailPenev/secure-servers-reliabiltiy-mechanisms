@@ -71,6 +71,7 @@ class WebServerSpec extends WordSpec with Matchers with ScalatestRouteTest with 
     }
   }
 
+  // "Stress" tests
   "The Actor Service" should {
     "not fail when more than 10 requests are sent" in {
       for (_ <- 1 to 20) {
