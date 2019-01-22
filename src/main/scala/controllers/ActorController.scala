@@ -5,17 +5,20 @@ import actors.Supervisor
 import akka.actor.{ActorRef, ActorSystem, Props}
 import akka.http.scaladsl.model.StatusCode
 import akka.http.scaladsl.model.headers.{HttpCookiePair, HttpCredentials}
+import akka.routing.RoundRobinPool
 
 object ActorController {
+  val NumberOfSupervisors: Integer = 10
+
   private val system: ActorSystem = ActorSystem("Supervisor-Workers")
 
-  private val supervisor: ActorRef = system.actorOf(Props[Supervisor])
+  private val supervisorActors: ActorRef = system.actorOf(Props[Supervisor].withRouter(RoundRobinPool(NumberOfSupervisors)))
 
   def authenticate(credentials: Option[HttpCredentials], complete: StatusCode => Unit): Unit = {
-    supervisor ! Authenticate(credentials, complete)
+    supervisorActors ! Authenticate(credentials, complete)
   }
 
   def authorizeAdmin(nameCookie: HttpCookiePair, complete: StatusCode => Unit): Unit = {
-    supervisor ! Authorize(nameCookie, complete)
+    supervisorActors ! Authorize(nameCookie, complete)
   }
 }

@@ -8,6 +8,8 @@ import org.scalatest.{Matchers, WordSpec}
 
 class WebServerSpec extends WordSpec with Matchers with ScalatestRouteTest with Routes {
   val models: Vector[String] = Vector("exceptions", "actors", "futures")
+  val validCredentials = BasicHttpCredentials("User", "ObfuscatedPassword")
+  val invalidCredentials = BasicHttpCredentials("John", "p4ssw0rd")
 
   "The service" should {
     "return a 'Hello!' response for GET requests to /hello" in {
@@ -25,17 +27,16 @@ class WebServerSpec extends WordSpec with Matchers with ScalatestRouteTest with 
     }
   }
 
+  // Unit Tests
   for (model <- models) {
     s"The authentication service for $model" should {
       "authenticate properly with good basic auth params" in {
-        val validCredentials = BasicHttpCredentials("User", "ObfuscatedPassword")
         Get(s"/$model/login") ~> addCredentials(validCredentials) ~> route ~> check {
           status shouldEqual StatusCodes.OK
         }
       }
 
       "not authenticate when invalid credentials" in {
-        val invalidCredentials = BasicHttpCredentials("John", "p4ssw0rd")
         Get(s"/$model/login") ~> addCredentials(invalidCredentials) ~> route ~> check {
           status shouldEqual StatusCodes.Unauthorized
         }
@@ -65,6 +66,19 @@ class WebServerSpec extends WordSpec with Matchers with ScalatestRouteTest with 
         // missing cookie
         Get(s"/$model/admin") ~> route ~> check {
           rejection shouldEqual MissingCookieRejection("userName")
+        }
+      }
+    }
+  }
+
+  "The Actor Service" should {
+    "not fail when more than 10 requests are sent" in {
+      for (_ <- 1 to 20) {
+        Get(s"/actors/login") ~> addCredentials(validCredentials) ~> route ~> check {
+          status shouldEqual StatusCodes.OK
+        }
+        Get(s"/actors/admin") ~> Cookie("userName" -> "RandomlyGeneratedCookie") ~> route ~> check {
+          status shouldEqual StatusCodes.OK
         }
       }
     }
