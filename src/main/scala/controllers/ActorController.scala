@@ -8,11 +8,10 @@ import akka.http.scaladsl.model.headers.{HttpCookiePair, HttpCredentials}
 import akka.routing.RoundRobinPool
 
 object ActorController {
-  val NumberOfSupervisors: Integer = 10
+  val NUMBER_OF_SUPERVISORS: Integer = 10
 
   private val system: ActorSystem = ActorSystem("Supervisor-Workers")
-
-  private val supervisors: ActorRef = system.actorOf(Props[Supervisor].withRouter(RoundRobinPool(NumberOfSupervisors)))
+  private val supervisors: ActorRef = system.actorOf(Props[Supervisor].withRouter(RoundRobinPool(NUMBER_OF_SUPERVISORS)))
 
   def authenticate(credentials: Option[HttpCredentials], complete: StatusCode => Unit): Unit = {
     supervisors ! Authenticate(credentials, complete)
