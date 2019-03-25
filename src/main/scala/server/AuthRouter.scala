@@ -7,43 +7,43 @@ import controllers.{ActorController, FutureController, TryCatchController}
 
 object AuthRouter {
   lazy val routes: Route =
-    pathPrefix("exceptions") {
-      path("login") {
-        extractCredentials { credentials =>
-          completeWith(instanceOf[StatusCode]) { completerFunction =>
-            TryCatchController.authenticate(credentials, completerFunction)
-          }
-        }
-      } ~ path("admin") {
-          cookie("userName") { nameCookie =>
-            completeWith(instanceOf[StatusCode]) { completerFunction =>
-              TryCatchController.authorizeAdmin(nameCookie, completerFunction)
-            }
-          }
-        }
-    } ~ pathPrefix("actors") {
-      path("login") {
+    pathPrefix(Config.ActorsPath) {
+      path(Config.LoginPath) {
         extractCredentials { credentials =>
           completeWith(instanceOf[StatusCode]) { completerFunction =>
             ActorController.authenticate(credentials, completerFunction)
           }
         }
-      } ~ path("admin") {
-          cookie("userName") { nameCookie =>
+      } ~ path(Config.AdminPath) {
+        cookie(Config.CookieName) { nameCookie =>
+          completeWith(instanceOf[StatusCode]) { completerFunction =>
+            ActorController.authorizeAdmin(nameCookie, completerFunction)
+          }
+        }
+      }
+    } ~ pathPrefix(Config.ExceptionsPath) {
+      path(Config.LoginPath) {
+        extractCredentials { credentials =>
+          completeWith(instanceOf[StatusCode]) { completerFunction =>
+            TryCatchController.authenticate(credentials, completerFunction)
+          }
+        }
+      } ~ path(Config.AdminPath) {
+          cookie(Config.CookieName) { nameCookie =>
             completeWith(instanceOf[StatusCode]) { completerFunction =>
-              ActorController.authorizeAdmin(nameCookie, completerFunction)
+              TryCatchController.authorizeAdmin(nameCookie, completerFunction)
             }
           }
         }
-    } ~ pathPrefix("futures") {
-      path("login") {
+    } ~ pathPrefix(Config.FuturesPath) {
+      path(Config.LoginPath) {
         extractCredentials { credentials =>
           completeWith(instanceOf[StatusCode]) { completerFunction =>
             FutureController.authenticate(credentials, completerFunction)
           }
         }
-      } ~ path("admin") {
-          cookie("userName") { nameCookie =>
+      } ~ path(Config.AdminPath) {
+          cookie(Config.CookieName) { nameCookie =>
             completeWith(instanceOf[StatusCode]) { completerFunction =>
               FutureController.authorizeAdmin(nameCookie, completerFunction)
             }

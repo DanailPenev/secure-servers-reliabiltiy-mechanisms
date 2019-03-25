@@ -3,7 +3,7 @@ package controllers
 import akka.http.scaladsl.model.headers.{HttpCookiePair, HttpCredentials}
 import akka.http.scaladsl.model.{StatusCode, StatusCodes}
 import akka.http.scaladsl.server.directives.Credentials
-import util.Common
+import server.Common
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
