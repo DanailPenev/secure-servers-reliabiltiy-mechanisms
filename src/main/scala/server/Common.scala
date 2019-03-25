@@ -1,7 +1,6 @@
-package util
+package server
 
 import akka.http.scaladsl.server.directives.Credentials
-import server.Config
 
 object Common {
   def authenticate(credentials: Credentials): Unit =

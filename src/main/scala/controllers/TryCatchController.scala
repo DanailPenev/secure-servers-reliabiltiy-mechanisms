@@ -3,7 +3,7 @@ package controllers
 import akka.http.scaladsl.model.headers.{HttpCookiePair, HttpCredentials}
 import akka.http.scaladsl.model.{StatusCode, StatusCodes}
 import akka.http.scaladsl.server.directives.Credentials
-import util.Common
+import server.Common
 
 object TryCatchController {
   def authenticate(credentials: Option[HttpCredentials], complete: StatusCode => Unit): Unit = {

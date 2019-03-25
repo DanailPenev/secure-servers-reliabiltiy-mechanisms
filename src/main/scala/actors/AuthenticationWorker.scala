@@ -5,7 +5,7 @@ import akka.actor.Actor
 import akka.http.scaladsl.model.headers.HttpCredentials
 import akka.http.scaladsl.model.{StatusCode, StatusCodes}
 import akka.http.scaladsl.server.directives.Credentials
-import util.Common
+import server.Common
 
 class AuthenticationWorker(credentials: Option[HttpCredentials], complete: StatusCode => Unit ) extends Actor {
   override def receive: Receive = {

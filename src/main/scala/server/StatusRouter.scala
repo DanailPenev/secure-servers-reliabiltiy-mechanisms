@@ -4,13 +4,13 @@ import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
 import akka.http.scaladsl.server.Directives.{complete, get, path}
 import akka.http.scaladsl.server.Route
 
-object HelloRouter {
-  val input: String = """{"status": "ok"}"""
+object StatusRouter {
+  val output: String = """{"status": "ok"}"""
 
   val routes: Route =
-    path("hello") {
+    path("status") {
       get {
-        complete(HttpEntity(ContentTypes.`application/json`, input))
+        complete(HttpEntity(ContentTypes.`application/json`, output))
       }
     }
 }

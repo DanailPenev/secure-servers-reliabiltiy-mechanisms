@@ -4,7 +4,7 @@ import actors.Messages.{Authorize, CompleteFailed}
 import akka.actor.Actor
 import akka.http.scaladsl.model.headers.HttpCookiePair
 import akka.http.scaladsl.model.{StatusCode, StatusCodes}
-import util.Common
+import server.Common
 
 class AuthorizationWorker(cookie: HttpCookiePair, complete: StatusCode => Unit) extends Actor{
   override def receive: Receive = {

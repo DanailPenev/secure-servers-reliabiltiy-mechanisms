@@ -11,7 +11,6 @@ object ActorController {
   val NumberOfSupervisors: Integer = 10
 
   private val system: ActorSystem = ActorSystem("Supervisor-Workers")
-
   private val supervisors: ActorRef = system.actorOf(Props[Supervisor].withRouter(RoundRobinPool(NumberOfSupervisors)))
 
   def authenticate(credentials: Option[HttpCredentials], complete: StatusCode => Unit): Unit = {
