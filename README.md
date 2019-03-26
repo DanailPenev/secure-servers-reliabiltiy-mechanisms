@@ -1,14 +1,15 @@
-# Comparing Cyber Security Programming Models in Scala
+# Comparing Reliability Mechanisms for Secure Web Servers: Actors, Exceptions and Futures
 
-A simple Scala web server, developed with the [akka-http framework](https://github.com/akka/akka-http).
+A secure web application benchmark, developed in Scala with the [akka-http framework](https://github.com/akka/akka-http). It implements three different reliability mechanisms:
 
-The server features three different authentication and authorisation models:
+* Actor model
+* Exceptions (try-catch)
+* Futures
 
-* Traditional try/catch model
-* Actor-based model
-* Future-based model
+## Requirements
 
-The main hypothesis that is being tested and evaluated is that the actor and future models can give comparable performance to the try/catch model while reducing the number of states in the program. This directly minimises the available vectors for cyber attacks.
+* [JDK 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+* [sbt (Scala Build Tool)](https://www.scala-sbt.org/)
 
 ## Installation
 
@@ -17,6 +18,6 @@ The main hypothesis that is being tested and evaluated is that the actor and fut
 1. Enter `sbt test` in the terminal to run the included tests
 1. `sbt run` starts the web server locally
 
-## Contributing
+## Additional Files
 
-The application is still in a very early stage of development so external contributions are not accepted yet.
+The project also contains two directories named `wrk_scripts` and `bash_scripts`. `wrk_scripts` contains Lua scripts that are used by the `wrk` load-testing tool for the evaluation. `bash_scripts` has the bash scripts used for running the evaluation. This assumes the `wrk` binary is appended to the system PATH.
