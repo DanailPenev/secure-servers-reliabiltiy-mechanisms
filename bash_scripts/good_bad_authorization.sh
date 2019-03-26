@@ -7,7 +7,7 @@ concurrency="50 100 200 400 800 1600 3200"
 # warm-up run
 for i in {1..3}
 do
-        ./tools/wrk/wrk -t32 -c1000 -d5m -s../wrk_scripts/csv_good_authorization.lua $hostname:8080/actors/admin
+        wrk -t32 -c1000 -d5m -s../wrk_scripts/csv_good_authorization.lua $hostname:8080/actors/admin
 done
 
 for mode in $models
