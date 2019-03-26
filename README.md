@@ -20,4 +20,4 @@ A secure web application benchmark, developed in Scala with the [akka-http frame
 
 ## Additional Files
 
-The project also contains two directories named `wrk_scripts` and `bash_scripts`. `wrk_scripts` contains Lua scripts that are used by the `wrk` load-testing tool for the evaluation. `bash_scripts` has the bash scripts used for running the evaluation. Each of these scripts works, assuming the `wrk` binary is appended to the PATH.
+The project also contains two directories named `wrk_scripts` and `bash_scripts`. `wrk_scripts` contains Lua scripts that are used by the `wrk` load-testing tool for the evaluation. `bash_scripts` has the bash scripts used for running the evaluation. This assumes the `wrk` binary is appended to the system PATH.
