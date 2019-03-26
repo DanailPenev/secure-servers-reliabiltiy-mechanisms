@@ -9,7 +9,7 @@ lazy val root = (project in file("."))
       scalaVersion := "2.12.7",
       version      := "0.1.0-SNAPSHOT"
     )),
-    name := "scala-cyber-security-models",
+    name := "secure-servers-reliability-mechanisms",
     libraryDependencies += scalaTest % Test,
     libraryDependencies += "com.typesafe.akka" %% "akka-http" % "10.1.5" ,
     libraryDependencies += "com.typesafe.akka" %% "akka-http-testkit" % "10.1.5",
