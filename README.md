@@ -20,4 +20,6 @@ A secure web application benchmark, developed in Scala with the [akka-http frame
 
 ## Additional Files
 
-The project also contains two directories named `wrk_scripts` and `bash_scripts`. `wrk_scripts` contains Lua scripts that are used by the `wrk` load-testing tool for the evaluation. `bash_scripts` has the bash scripts used for running the evaluation. This assumes the `wrk` binary is appended to the system PATH.
+The project also contains two directories named `wrk_scripts` and `ab_scripts`. `wrk_scripts` contains Lua scripts that are used by the `wrk` load-testing tool for the evaluation and bash scripts for running the experiments. `ab_scripts` has the bash scripts used for the preliminary Apache Bench experiments. These scripts assume the `wrk` and `ab` binaries are appended to the system PATH.
+
+The `results` directory contains the raw result files obtained from the experiment runs. The first 3 lines of each can be discarded as trial runs. The data then follows the format 3 runs of 7 concurrency levels (50, 100, 200, 400, 800, 1600, 3200) in the order: actors, exceptions, futures.
